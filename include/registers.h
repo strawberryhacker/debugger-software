@@ -133,4 +133,25 @@ typedef struct {
 
 //--------------------------------------------------------------------------------------------------
 
+typedef struct {
+	_rw u16   CTRLA;
+	__r u16   RESERVED0;
+	_rw u32   CTRLB;
+	_rw u32   PARAM;
+	_rw u8    INTENCLR;
+	__r u8    RESERVED1[3];
+	_rw u8    INTENSET;
+	__r u8    RESERVED2[3];
+	_rw u8    INTFLAG;
+	__r u8    RESERVED3[3];
+	_rw u16   STATUS;
+	__r u16   RESERVED4;
+	_rw u32   ADDR;
+	_rw u16   LOCK;
+} Nvmctrl;
+
+#define NVMCTRL ((Nvmctrl *)0x41004000)
+
+//--------------------------------------------------------------------------------------------------
+
 #endif
