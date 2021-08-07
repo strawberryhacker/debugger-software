@@ -1,3 +1,5 @@
+// Author: strawberryhacker
+
 #include "registers.h"
 #include "utilities.h"
 #include "stdint.h"
@@ -26,6 +28,9 @@ typedef enum {
 	PIN_FUNCTION_I
 } PinFunction;
 
+
+volatile u32 testtest;
+
 //--------------------------------------------------------------------------------------------------
 
 static void clock_init() {
@@ -38,19 +43,24 @@ static void set_pin_function(Port* port, u32 pin, PinFunction function) {
 	port->PINCFG[pin] = 1;
 }
 
-static void uart_init() {
-
+static void print_char(char c) {
+	while ((UART0->INTFLAG & 1) == 0);
+	UART0->DATA = c;
 }
 
-static void print(const char* data) {
-	while (*data) {
-		while ((UART0->INTFLAG & 1) == 0);
-		UART0->DATA = *data++;
+void print(const char* data, ...) {
+	static char print_buffer[512];
+	va_list arguments;
+	va_start(arguments, data);
+	u32 size = format_string(data, print_buffer, 512, arguments);
+
+	for (u32 i = 0; i < size; i++) {
+		print_char(print_buffer[i]);
 	}
 }
 
 static void wait() {
-	for (u32 i = 0; i < 50000; i++) {
+	for (u32 i = 0; i < 100000; i++) {
 		__asm__("nop");
 	}
 }
@@ -75,11 +85,10 @@ void main() {
 	while (UART0->SYNCBUSY & (1 << 1));
 
 	PORTA->DIRSET = 1 << 14 | 1 << 15;
+
+	print("This is a test {u}\n", 234);
 	
 	while (1) {
-		
-		print("This is a test\n");
-		
 		PORTA->OUTSET = 1 << 14 | 1 << 15;
 		wait();
 		PORTA->OUTCLR = 1 << 14 | 1 << 15;
