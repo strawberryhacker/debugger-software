@@ -28,9 +28,6 @@ typedef enum {
 	PIN_FUNCTION_I
 } PinFunction;
 
-
-volatile u32 testtest;
-
 //--------------------------------------------------------------------------------------------------
 
 static void clock_init() {
@@ -38,15 +35,21 @@ static void clock_init() {
 	SYSCTRL->OSC8M &= ~(0b11 << 8);
 }
 
+//--------------------------------------------------------------------------------------------------
+
 static void set_pin_function(Port* port, u32 pin, PinFunction function) {
 	port->PMUX[pin / 2] = (port->PMUX[pin / 2] & ~(0xf << (4 * (pin & 1)))) | (function << (4 * (pin & 1)));
 	port->PINCFG[pin] = 1;
 }
 
+//--------------------------------------------------------------------------------------------------
+
 static void print_char(char c) {
 	while ((UART0->INTFLAG & 1) == 0);
 	UART0->DATA = c;
 }
+
+//--------------------------------------------------------------------------------------------------
 
 void print(const char* data, ...) {
 	static char print_buffer[512];
@@ -59,11 +62,15 @@ void print(const char* data, ...) {
 	}
 }
 
+//--------------------------------------------------------------------------------------------------
+
 static void wait() {
 	for (u32 i = 0; i < 100000; i++) {
 		__asm__("nop");
 	}
 }
+
+//--------------------------------------------------------------------------------------------------
 
 void main() {
 	clock_init();

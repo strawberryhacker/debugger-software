@@ -2,6 +2,8 @@
 
 #include "utilities.h"
 
+//--------------------------------------------------------------------------------------------------
+
 enum {
     FORMAT_FLAG_ZERO_PAD     = 0x1,
     FORMAT_FLAG_NO_SIGN      = 0x2,
@@ -15,11 +17,15 @@ enum {
     FORMAT_FLAG_BIG_NUMBER   = 0x200,
 };
 
+//--------------------------------------------------------------------------------------------------
+
 static void write_char(char c, char** buffer, char* end) {
     if (*buffer != end) {
         *(*buffer)++ = c; 
     }
 }
+
+//--------------------------------------------------------------------------------------------------
 
 static char* write_number(s64 value, u32 width, u32 flags, char* buffer, char* end) {
     char* hex_table = (flags & FORMAT_FLAG_UPPERCASE) ? "0123456789ABCDEF" : "0123456789abcdef";
@@ -79,9 +85,13 @@ static char* write_number(s64 value, u32 width, u32 flags, char* buffer, char* e
     return buffer;
 }
 
+//--------------------------------------------------------------------------------------------------
+
 static s64 read_number(va_list* arguments, u32 flags) {
     return (flags & FORMAT_FLAG_BIG_NUMBER) ? (s64)va_arg(*arguments, long long) : (s64)va_arg(*arguments, int);
 }
+
+//--------------------------------------------------------------------------------------------------
 
 u32 format_string(const char* string, char* buffer, u32 buffer_size, va_list arguments) {
     char* start = buffer;
@@ -205,7 +215,7 @@ u32 format_string(const char* string, char* buffer, u32 buffer_size, va_list arg
     return buffer - start;
 }
 
-
+//--------------------------------------------------------------------------------------------------
 
 void memory_copy(void* source, void* destination, u32 size) {
     u8* source_pointer = source;
@@ -216,6 +226,8 @@ void memory_copy(void* source, void* destination, u32 size) {
     }
 }
 
+//--------------------------------------------------------------------------------------------------
+
 void memory_fill(void* memory, u8 fill, u32 size) {
     u8* destination = memory;
 
@@ -223,6 +235,8 @@ void memory_fill(void* memory, u8 fill, u32 size) {
         destination[i] = fill;
     }
 }
+
+//--------------------------------------------------------------------------------------------------
 
 void memory_clear(void* memory, u32 size) {
     u8* destination = memory;
