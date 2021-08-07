@@ -9,8 +9,17 @@ executable   = $(build_path)/binaries/program
 source += $(project_path)/main.c
 source += $(project_path)/startup.c
 source += $(project_path)/utilities.c
+source += $(project_path)/clock.c
+source += $(project_path)/gpio.c
+source += $(project_path)/print.c
+source += $(project_path)/usb.c
 
 include += $(project_path)/include/utilities.h
+include += $(project_path)/include/registers.h
+include += $(project_path)/include/gpio.h
+include += $(project_path)/include/clock.h
+include += $(project_path)/include/print.h
+include += $(project_path)/include/usb.h
 include += $(project_path)/make/makefile
 
 #---------------------------------------------------------------------------------------------------
